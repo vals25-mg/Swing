@@ -88,7 +88,7 @@ public class WindowClient extends JFrame{
 
         setSend(new JButton("SEND"));
         getSend().setFont(new Font("Arial",Font.TRUETYPE_FONT,14));
-
+        System.out.println(1);
         /*@Location of all Components */
         getChoose().setBounds(150, 400, 100, 50);
         getSend().setBounds(250, 400, 100, 50);
