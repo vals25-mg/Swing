@@ -66,6 +66,8 @@ public class WindowClient extends JFrame{
             this.setSize(500, 500);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+            System.out.println("EBFIOZJBEFOBN");
+
 
         /*@File Declaration */
         
