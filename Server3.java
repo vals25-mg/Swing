@@ -1,31 +1,24 @@
-package fenetre;
+package distribution;
 
-import java.io.DataInputStream;
-import java.io.FileOutputStream;
-import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.*;
 
 import javax.swing.JFrame;
 
-import objets.MyFile;
- 
-public class WindowServer extends JFrame{
+import java.io.*;
+import java.net.*;
+public class Server3 extends JFrame{
 
-    public WindowServer() throws Exception {
-
-        
+    public Server3() throws Exception{
         /*  Property of the JFrame */
-        this.setTitle("Server Principale");
+        this.setTitle("Server n°3");
             this.setLayout(null);
             this.setLocationRelativeTo(null);
             this.setVisible(true);
-            this.setSize(500, 500);
+            this.setSize(400, 200);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
             /*Socket */
-        ServerSocket serverSocket=new ServerSocket(1234);
+        ServerSocket serverSocket=new ServerSocket(9993);
         while(true){
             Socket socket=serverSocket.accept();
             DataInputStream dataInputStream= new DataInputStream(socket.getInputStream());
@@ -42,8 +35,8 @@ public class WindowServer extends JFrame{
                 if (fileContentLength>0) {
                     byte [] fileContentBytes=new byte[fileContentLength];
                     dataInputStream.readFully(fileContentBytes, 0, fileContentLength);
-
-                    File fileToDownload=new File("ServerDownload/"+filename);
+                    // String a=String.valueO
+                    File fileToDownload=new File("Server distribue/Server3/"+filename);
                     try {
                         FileOutputStream fileOutputStream= new FileOutputStream(fileToDownload);
                         fileOutputStream.write(fileContentBytes);
@@ -57,7 +50,7 @@ public class WindowServer extends JFrame{
         }
     }
     public  void writeFile(Object o) throws Exception{
-        File file=new File("Server Principal/memo.txt");
+        File file=new File("./Server distribue/Server3/memo.txt");
          Vector v=new Vector<>();
         if (!file.exists()) {
          System.out.println("tsy misy atramzao");
@@ -90,13 +83,4 @@ public class WindowServer extends JFrame{
          return v;
      }
     
-    public static void main(String[] args) {
-        try {
-            new WindowServer();
-            
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        }
-    }
 }
