@@ -49,7 +49,7 @@ public class ListenerClient implements ActionListener{
             }
             else{
                 try {
-                getWindowClient().send();
+                getWindowClient().send(getWindowClient().getSocket());
                 getWindowClient().getShowFile().setForeground(Color.green);
                 getWindowClient().getShowFile().setText("File Sent");
             } catch (Exception e) {

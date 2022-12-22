@@ -10,16 +10,21 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+
 import java.net.Socket;
 
 import listener.ListenerClient;
 
 public class WindowClient extends JFrame{
     int port;
+    String host;
+    Socket socket;
     JButton choose,send;
     File fichier;
     JLabel showFile;
     JTable tableUpload,tableDownload;
+    
     
     
     public JTable getTableUpload() {
@@ -83,12 +88,23 @@ public class WindowClient extends JFrame{
         /*  @Property of the JFrame */
             this.setTitle("Client");
             this.setLayout(null);
-            // this.setLocationRelativeTo(null);
-            this.setVisible(true);
+            this.setLocationRelativeTo(null);
+            this.setVisible(false);
             this.setSize(500, 520);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+            /*JOptionPane */
+            JTextField host=new JTextField();
+            JTextField port=new JTextField();
+             Object[] message={
+                 "Host",host,
+                 "Port",port
+             };
+             recurssiveConnect(message,"Connection",host,port);
 
+             /*Socket */
+             Socket socket= new Socket(getHost(), getPort());
+             this.setSocket(socket);
         /*JTable */  
         String[] columnnames={ "First Name",
                                 "Last Name",
@@ -98,35 +114,6 @@ public class WindowClient extends JFrame{
         };
         Object[][] data={
             {"Kathy","Smith","SnowBoarding",5,false},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
-            {"John","Doe","Rowing",3,true},
             {"John","Doe","Rowing",3,true},
             {"John","Doe","Rowing",3,true},
             {"John","Doe","Rowing",3,true},
@@ -156,8 +143,8 @@ public class WindowClient extends JFrame{
         /*@Declaration NavBar*/
         JTabbedPane onglets=new JTabbedPane();
         onglets.setBounds(0, 0, 500, 500);
-        onglets.add("Download",jp);
-        onglets.add("Upload",jp1);
+        onglets.add("Upload",jp);
+        onglets.add("Online",jp1);
 
         /*@Declarations of JLabel */
         JLabel title=new JLabel();
@@ -207,9 +194,10 @@ public class WindowClient extends JFrame{
    public void connectServer(){
 
    }
-   public void send() throws Exception{
+   public void send(Socket socket) throws Exception{
     FileInputStream fileInputStream= new FileInputStream(getFichier().getAbsolutePath());
-                Socket socket= new Socket("localhost", 1234);
+    
+    
 
                 DataOutputStream dataOutputStream= new DataOutputStream(socket.getOutputStream());
 
@@ -226,7 +214,37 @@ public class WindowClient extends JFrame{
                 dataOutputStream.writeInt(fileContentBytes.length);
                 dataOutputStream.write(fileContentBytes);
    }
+   public  void recurssiveConnect(Object[] message,String title,JTextField host,JTextField port){
+    int option=JOptionPane.showConfirmDialog(null, message, "Connection", JOptionPane.OK_CANCEL_OPTION);
+    if (option==JOptionPane.OK_OPTION) {
+        if ((host.getText().equals("localhost") || host.getText().contains("."))  && port.getText().length()==4) {
+            this.setHost(host.getText());
+            this.setPort(Integer.parseInt(port.getText()));
+            this.setVisible(true);
+        }
+        else recurssiveConnect(message, title, host, port);
+    }
+    else{
+        recurssiveConnect(message, title, host, port);
+    }
+}
    public static void main(String[] args) {
     new WindowClient();
-   }    
+   }
+
+public String getHost() {
+    return host;
+}
+
+public void setHost(String host) {
+    this.host = host;
+}
+
+public Socket getSocket() {
+    return socket;
+}
+
+public void setSocket(Socket socket) {
+    this.socket = socket;
+}    
 }
